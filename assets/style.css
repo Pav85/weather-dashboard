@@ -1,7 +1,17 @@
 /* new css file */
-/* 
+
 .buttonHistory {
-    margin: 5px;
+    /* margin: 5px; */
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 5px;
-    border: 1px solid black;
-} */
+    /* border: 1px solid black; */
+    min-height: 30px;
+    /* color: blue !important; */
+}
+
+.form-input {
+    width: 318px !important;
+    min-height: 40px !important;
+    
+}
