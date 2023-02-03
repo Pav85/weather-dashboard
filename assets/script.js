@@ -7,13 +7,41 @@ var citySearch = $("#search-input");
 // var history = $("#history");
 var cityBtnArray = [];
 
-var city = $(this).attr("data-name");
+
+function displayWeather() {
+
+   
+    var city = $(this).attr("data-name");
+
+    // var city = "warsaw";
+    
+
+
+    var queryURL = "api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIkey;
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        console.log(response);
+        
+
+        var weatherDiv = $("#today");
+        
+        var cityName = response.city.name;
+
+        var pOne = $("<p>").text(cityName);
+        weatherDiv.append(pOne);
+
+    });
+
+};
 
 $("#search-button").addClass("btn btn-primary");
 
 function renderCityButtons() {
     
-    $("#history").empty();
+    $("#history").empty();   
 
     for (var i = 0; i < cityBtnArray.length; i++) {
         
@@ -21,12 +49,9 @@ function renderCityButtons() {
     
         a.addClass("btn btn-secondary buttonHistory");  
 
-        // a.attr("city-button");
 
         a.attr("data-name", cityBtnArray[i]);
-        // a.attr("class", "btn btn-primary");
-        // a.attr("class", "btn btn-secondary buttonHistory");
-        // a.text(cityBtnArray[i]);
+        
         a.text(cityBtnArray[i]);
 
         $("#history").append(a);
@@ -46,9 +71,12 @@ $("#search-button").on("click", function(event) {
     cityBtnArray.push(city);
 
     renderCityButtons();
+
+    console.log(city);
 });
 
-// $(document).on("click", ".buttonHistory", displayWeather)
+$(document).on("click", ".buttonHistory", displayWeather);
+$(document).on("click", ".search-button", displayWeather);
 
 renderCityButtons();
 
