@@ -7,22 +7,22 @@ var citySearch = $("#search-input");
 // var history = $("#history");
 var cityBtnArray = [];
 
-
 function displayWeather() {
 
    
     var city = $(this).attr("data-name");
 
+    // var city = $(event.target).attr("data-name");
+
     // var city = "warsaw";
-    
-
-
     var queryURL = "api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIkey;
+    // var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=warsaw&appid=11f628af2243468c36a25b569b68d689"
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response) {
+        
         console.log(response);
         
 
@@ -31,7 +31,15 @@ function displayWeather() {
         var cityName = response.city.name;
 
         var pOne = $("<p>").text(cityName);
+        
         weatherDiv.append(pOne);
+
+        var todayDate = moment().format("MM/DD/YYYY");
+
+        var pTwo = $("<p>").text(todayDate);
+        
+        weatherDiv.append(pTwo);
+
 
     });
 
@@ -49,7 +57,8 @@ function renderCityButtons() {
     
         a.addClass("btn btn-secondary buttonHistory");  
 
-
+        // var cityData = cityBtnArray[i];
+        
         a.attr("data-name", cityBtnArray[i]);
         
         a.text(cityBtnArray[i]);
