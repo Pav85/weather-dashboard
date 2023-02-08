@@ -20,18 +20,10 @@
   min-height: 40px !important;
 }
 
-/* .weather-hr {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: black;
-} */
-
 .oneDayBox {
-  padding: 10%; /* not sure here yet */
+  padding: 10%;
   border: 1px solid black;
   min-height: 220px;
-  /* background-image: ; */
 }
 
 .oneDayBox p {
