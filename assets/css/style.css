@@ -1,30 +1,40 @@
 /* new css file */
+.search-button {
+  margin-top: 15px;
+  width: 318px;
+  padding: 25px;
+  min-height: 30px;
+  border-radius: 5px !important;
+}
 
 .buttonHistory {
-  /* margin: 5px; */
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 5px;
-  /* border: 1px solid black; */
+  width: 318px;
   min-height: 30px;
-  /* color: blue !important; */
 }
 
-/* .form-input {
-    width: 318px !important;
-    min-height: 40px !important;
-    
-} */
+.form-input {
+  width: 318px !important;
+  min-height: 40px !important;
+}
 
-.weather-hr {
+/* .weather-hr {
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: black;
-}
+} */
 
 .oneDayBox {
   padding: 10%; /* not sure here yet */
   border: 1px solid black;
   min-height: 220px;
+  /* background-image: ; */
+}
+
+.oneDayBox p {
+  font-size: large;
+  font-weight: 400;
 }

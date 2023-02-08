@@ -1,6 +1,6 @@
 var citySearch = $("#search-input");
 
-// var cityBtnArray = [];
+// local storage
 
 function initLS() {
   const citiesFromLS = JSON.parse(localStorage.getItem("citySearchHistory"));
@@ -49,7 +49,7 @@ function displayWeather() {
 
     var iconImage = $("<img src=" + iconURL + ">");
 
-    var pOne = $("<p>").text(cityName + " (" + todayDate + ") ");
+    var pOne = $("<h1>").text(cityName + " (" + todayDate + ") ");
 
     weatherDiv.append(oneDay);
     oneDay.append(pOne);
@@ -74,6 +74,8 @@ function displayWeather() {
 
 $("#search-button").addClass("btn btn-primary");
 
+// function below generates buttons with cities that were searched
+
 function renderCityButtons() {
   $("#history").empty();
 
@@ -84,8 +86,6 @@ function renderCityButtons() {
 
     a.addClass("btn btn-secondary buttonHistory");
 
-    // var cityData = cityBtnArray[i];
-
     a.attr("data-name", cityBtnArray[i]);
 
     a.text(cityBtnArray[i]);
@@ -94,7 +94,7 @@ function renderCityButtons() {
   }
 }
 
-// this function renders buttons after clikcking the search button
+// click events for buttons
 
 $("#search-button").on("click", function (event) {
   event.preventDefault();
@@ -114,7 +114,5 @@ $("#search-button").on("click", function (event) {
 });
 
 $(document).on("click", ".buttonHistory", displayWeather);
-
-// $(document).on("click", ".search-button", displayWeather);
 
 renderCityButtons();
