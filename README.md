@@ -15,6 +15,9 @@ SO THAT I can plan a trip accordingly
 After opening this URL: https://pav85.github.io/weather-dashboard/ you should see this:
 ![weather-dashboard](./assets/images/screenshot.png)
 
+After few search inputs the page should look similar to this:
+![weather-dashboard](./assets/images/screenshot2.png)
+
 ## Credits
 
 N/A
