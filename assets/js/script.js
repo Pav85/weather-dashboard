@@ -77,7 +77,10 @@ $("#search-button").addClass("btn btn-primary");
 // function below capitalises the first letter of the city name
 
 function capitaliseFirstLetter(cityName) {
-  return cityName.charAt(0).toUpperCase() + cityName.slice(1);
+  return cityName
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }
 
 // function below generates buttons with cities that were searched
