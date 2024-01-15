@@ -74,6 +74,12 @@ function displayWeather() {
 
 $("#search-button").addClass("btn btn-primary");
 
+// function below capitalises the first letter of the city name
+
+function capitaliseFirstLetter(cityName) {
+  return cityName.charAt(0).toUpperCase() + cityName.slice(1);
+}
+
 // function below generates buttons with cities that were searched
 
 function renderCityButtons() {
@@ -86,9 +92,11 @@ function renderCityButtons() {
 
     a.addClass("btn btn-secondary buttonHistory");
 
-    a.attr("data-name", cityBtnArray[i]);
+    var capitalisedCityName = capitaliseFirstLetter(cityBtnArray[i]);
 
-    a.text(cityBtnArray[i]);
+    a.attr("data-name", capitalisedCityName);
+
+    a.text(capitalisedCityName);
 
     $("#history").append(a);
   }
