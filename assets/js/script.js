@@ -4,7 +4,11 @@ var citySearch = $("#search-input");
 
 function initLS() {
   const citiesFromLS = JSON.parse(localStorage.getItem("citySearchHistory"));
-
+  if (citiesFromLS === null) {
+    console.log("No cities in local storage");
+  } else {
+    console.log("Cities from Local Storage:", citiesFromLS);
+  }
   if (!citiesFromLS) {
     localStorage.setItem("citySearchHistory", JSON.stringify([]));
   }
@@ -16,7 +20,7 @@ initLS();
 
 function getCoordinates(city, callback) {
   const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${APIkey}`;
-  // console.log("Fetching coordinates for: " + city);
+  console.log("Fetching coordinates for:", city);
 
   $.ajax({
     url: geocodeURL,
@@ -35,6 +39,7 @@ function getCoordinates(city, callback) {
 // function to display five day forecast
 
 function displayFiveDayForecast(coordinates) {
+  console.log("Displaying five day forecast for coordinates:", coordinates);
   const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${APIkey}&units=metric`;
 
   $.ajax({
@@ -67,6 +72,7 @@ function displayFiveDayForecast(coordinates) {
 }
 
 function displayWeather(city = null) {
+  console.log("Displaying weather for:", city);
   if (!city) {
     city = $(this).attr("data-name") || citySearch.val();
   }
@@ -141,6 +147,7 @@ function renderCityButtons() {
   $("#history").empty();
 
   const cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
+  console.log("Rendering buttons for cities:", cityBtnArray);
 
   for (var i = 0; i < cityBtnArray.length; i++) {
     var a = $("<button>");
@@ -163,6 +170,12 @@ $("#search-button").on("click", function (event) {
   event.preventDefault();
 
   var city = $("#search-input").val().trim();
+  console.log("Search button clicked for city:", city);
+
+  if (!city) {
+    console.log("No city entered");
+    return;
+  }
 
   getCoordinates(city, function (coordinates) {
     displayWeather(city);
@@ -186,6 +199,7 @@ $("#search-button").on("click", function (event) {
 
 $(document).on("click", ".buttonHistory", function () {
   var city = $(this).attr("data-name");
+  console.log("History button clicked for city:", city);
   getCoordinates(city, function (coordinates) {
     displayWeather(city);
     displayFiveDayForecast(coordinates);
