@@ -12,13 +12,65 @@ function initLS() {
 
 initLS();
 
-function displayWeather() {
-  let city;
+// function to get coordinates for a city
 
-  if ($(this).attr("data-name") === undefined) {
-    city = citySearch.val();
-  } else {
-    city = $(this).attr("data-name");
+function getCoordinates(city, callback) {
+  const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${APIkey}`;
+  // console.log("Fetching coordinates for: " + city);
+
+  $.ajax({
+    url: geocodeURL,
+    method: "GET",
+    success: function (data) {
+      if (data.length > 0) {
+        const coordinates = { lat: data[0].lat, lon: data[0].lon };
+        callback(coordinates);
+      } else {
+        console.log("City not found");
+      }
+    },
+  });
+}
+
+// function to display five day forecast
+
+function displayFiveDayForecast(coordinates) {
+  const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${APIkey}&units=metric`;
+
+  $.ajax({
+    url: forecastURL,
+    method: "GET",
+    success: function (response) {
+      $("#forecast").empty();
+      for (let i = 0; i < response.list.length; i += 8) {
+        // Loop through the forecast at 3-hour intervals, extracting one entry per day
+        const forecastData = response.list[i];
+
+        const date = new Date(forecastData.dt_txt).toLocaleDateString();
+        const temp = forecastData.main.temp;
+        const humidity = forecastData.main.humidity;
+        const weatherIconCode = forecastData.weather[0].icon;
+        const iconURL = `http://openweathermap.org/img/w/${weatherIconCode}.png`;
+
+        const forecastDiv = $(`<div class='fiveDaysBox'>`);
+        forecastDiv.append(`<h3>${date}</h3>`);
+        forecastDiv.append(`<img src="${iconURL}" alt="Weather icon">`);
+        forecastDiv.append(`<p>Temp: ${temp} °C</p>`);
+        forecastDiv.append(`<p>Humidity: ${humidity}%</p>`);
+
+        $("#forecast").append(forecastDiv);
+      }
+    },
+  });
+}
+
+function displayWeather(city = null) {
+  if (!city) {
+    city = $(this).attr("data-name") || citySearch.val();
+  }
+
+  if (!city) {
+    return;
   }
 
   var queryURL =
@@ -32,8 +84,6 @@ function displayWeather() {
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
-
     var weatherDiv = $("#today");
     weatherDiv.empty();
 
@@ -41,7 +91,7 @@ function displayWeather() {
 
     var cityName = response.city.name;
 
-    var todayDate = moment().format("MM/DD/YYYY");
+    var todayDate = moment().format("DD/MM/YYYY");
 
     var iconCode = response.list[0].weather[0].icon;
     var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
@@ -74,9 +124,9 @@ function displayWeather() {
 
 $("#search-button").addClass("btn btn-primary");
 
-// function below capitalises the first letter of the city name
+// function below capitalizes the first letter of the city name
 
-function capitaliseFirstLetter(cityName) {
+function capitalizeFirstLetter(cityName) {
   return cityName
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -95,7 +145,7 @@ function renderCityButtons() {
 
     a.addClass("btn btn-secondary buttonHistory");
 
-    var capitalisedCityName = capitaliseFirstLetter(cityBtnArray[i]);
+    var capitalisedCityName = capitalizeFirstLetter(cityBtnArray[i]);
 
     a.attr("data-name", capitalisedCityName);
 
@@ -109,26 +159,35 @@ function renderCityButtons() {
 
 $("#search-button").on("click", function (event) {
   event.preventDefault();
-  // displayWeather();
 
   var city = $("#search-input").val().trim();
 
-  if (city !== "") {
-    displayWeather();
+  getCoordinates(city, function (coordinates) {
+    displayWeather(city);
+    displayFiveDayForecast(coordinates);
+  });
 
-    citySearch.val("");
+  // Clear the search input
+  citySearch.val("");
 
-    let cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
-    var capitalisedCity = capitaliseFirstLetter(city);
-    if (!cityBtnArray.includes(capitalisedCity)) {
-      cityBtnArray.push(capitalisedCity);
-      localStorage.setItem("citySearchHistory", JSON.stringify(cityBtnArray));
-    }
-
-    renderCityButtons();
+  // Handle local storage for city search history
+  let cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
+  var capitalisedCity = capitalizeFirstLetter(city);
+  if (!cityBtnArray.includes(capitalisedCity)) {
+    cityBtnArray.push(capitalisedCity);
+    localStorage.setItem("citySearchHistory", JSON.stringify(cityBtnArray));
   }
+
+  // Render the city buttons again
+  renderCityButtons();
 });
 
-$(document).on("click", ".buttonHistory", displayWeather);
+$(document).on("click", ".buttonHistory", function () {
+  var city = $(this).attr("data-name");
+  getCoordinates(city, function (coordinates) {
+    displayWeather(city);
+    displayFiveDayForecast(coordinates);
+  });
+});
 
 renderCityButtons();

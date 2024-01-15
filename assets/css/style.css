@@ -23,10 +23,16 @@
 .oneDayBox {
   padding: 10%;
   border: 1px solid black;
-  min-height: 220px;
+  min-height: 200px;
 }
 
 .oneDayBox p {
   font-size: large;
   font-weight: 400;
+}
+
+.fiveDaysBox {
+  margin: 1%;
+  padding: 1%;
+  border: 1px solid black;
 }
