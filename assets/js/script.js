@@ -54,7 +54,9 @@ function displayFiveDayForecast(coordinates) {
 
         const forecastDiv = $(`<div class='fiveDaysBox'>`);
         forecastDiv.append(`<h3>${date}</h3>`);
-        forecastDiv.append(`<img src="${iconURL}" alt="Weather icon">`);
+        forecastDiv
+          .append(`<img src="${iconURL}" alt="Weather icon">`)
+          .addClass("text-center");
         forecastDiv.append(`<p>Temp: ${temp} °C</p>`);
         forecastDiv.append(`<p>Humidity: ${humidity}%</p>`);
 
