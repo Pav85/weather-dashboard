@@ -119,8 +119,9 @@ $("#search-button").on("click", function (event) {
     citySearch.val("");
 
     let cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
-    if (!cityBtnArray.includes(city)) {
-      cityBtnArray.push(city);
+    var capitalisedCity = capitaliseFirstLetter(city);
+    if (!cityBtnArray.includes(capitalisedCity)) {
+      cityBtnArray.push(capitalisedCity);
       localStorage.setItem("citySearchHistory", JSON.stringify(cityBtnArray));
     }
 
