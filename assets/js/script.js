@@ -98,19 +98,23 @@ function renderCityButtons() {
 
 $("#search-button").on("click", function (event) {
   event.preventDefault();
-  displayWeather();
+  // displayWeather();
 
   var city = $("#search-input").val().trim();
 
-  citySearch.val("");
+  if (city !== "") {
+    displayWeather();
 
-  let cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
-  if (!cityBtnArray.includes(city)) {
-    cityBtnArray.push(city);
-    localStorage.setItem("citySearchHistory", JSON.stringify(cityBtnArray));
+    citySearch.val("");
+
+    let cityBtnArray = JSON.parse(localStorage.getItem("citySearchHistory"));
+    if (!cityBtnArray.includes(city)) {
+      cityBtnArray.push(city);
+      localStorage.setItem("citySearchHistory", JSON.stringify(cityBtnArray));
+    }
+
+    renderCityButtons();
   }
-
-  renderCityButtons();
 });
 
 $(document).on("click", ".buttonHistory", displayWeather);
