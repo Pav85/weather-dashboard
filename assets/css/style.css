@@ -36,3 +36,9 @@
   padding: 1%;
   border: 1px solid black;
 }
+
+@media screen and (max-width: 768px) {
+  .list-group {
+    align-items: center;
+  }
+}
